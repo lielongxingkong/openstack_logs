@@ -29,7 +29,7 @@ chmod -R g+w /var/log/swift
 service rsyslog restart
 
 apt-get update
-apt-get -y install swift swift-proxy swift-doc memcached python-swiftclient python-webob
+apt-get install swift swift-proxy swift-doc memcached python-swiftclient python-webob
 
 if ! service_running memcached ;then
 	service memcached start
