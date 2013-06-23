@@ -33,7 +33,8 @@ service_running() {
 sudo apt-get install -y xfsprogs 
 #Local config image file 10G path: /srv/swift_image
 if [ ! -f /srv/swift_image ]; then
-sudo dd if=/dev/zero of=/srv/swift_image bs=1M count=${swift_image_size}
+#sudo dd if=/dev/zero of=/srv/swift_image bs=1M count=${swift_image_size}
+truncate -s ${swift_image_size}MB /srv/swift_image
 fi
 
 sudo mkfs.xfs -f /srv/swift_image
