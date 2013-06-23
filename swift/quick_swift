@@ -1,0 +1,2 @@
+#!/bin/bash
+swift -V 2 -A http://192.168.9.11:5000/v2.0 -U service:swift -K admin $*
