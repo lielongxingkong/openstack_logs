@@ -18,10 +18,11 @@ case $name in
 "datanode")
 	zone=`echo $value|awk -F '|' '{print $1}' `
 	ip=`echo $value|awk -F '|' '{print $2}' `
-	weight=`echo $value|awk -F '|' '{print $3}' `
-	sudo swift-ring-builder account.builder add $zone-$ip:6002/swift $weight
-	sudo swift-ring-builder container.builder add $zone-$ip:6001/swift $weight
-	sudo swift-ring-builder object.builder add $zone-$ip:6000/swift $weight
+	path= `echo $value|awk -F '|' '{print $3}' `
+	weight=`echo $value|awk -F '|' '{print $4}' `
+	sudo swift-ring-builder account.builder add $zone-$ip:6002/$path $weight
+	sudo swift-ring-builder container.builder add $zone-$ip:6001/$path $weight
+	sudo swift-ring-builder object.builder add $zone-$ip:6000/$path $weight
 ;;
 *)
 ;;
@@ -42,8 +43,8 @@ value=`echo $line|awk -F '=' '{print $2}'`
 case $name in
 "datanode")
 	ip=`echo $value|awk -F '|' '{print $2}' `
-	user=`echo $value|awk -F '|' '{print $4}' `
-	scp /etc/swift/*.gz $user@$ip:/tmp
+	user=`echo $value|awk -F '|' '{print $5}' `
+	scp /etc/swift/*.gz $user@$ip:/etc/swift/
 ;;
 *)
 ;;
