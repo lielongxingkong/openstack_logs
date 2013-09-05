@@ -1,0 +1,2 @@
+#!/bin/bash
+mount -t xfs -o noatime,nodiratime,logbufs=8 -L d1 /swift/d1

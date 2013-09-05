@@ -1,0 +1,10 @@
+#!/bin/bash
+
+swift-init all stop
+find /var/log/swift -type f -exec rm -f {} \;
+sudo umount /swift
+sudo mkfs.xfs -f -i size=1024 /srv/swift_image
+sudo mount /swift
+sudo chown swift:swift /swift
+find /var/cache/swift* -type f -name *.recon -exec rm -f {} \;
+sudo service rsyslog restart

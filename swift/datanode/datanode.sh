@@ -40,7 +40,7 @@ fi
 sudo mkfs.xfs -f /srv/swift_image
 infstab=$(cat /etc/fstab|grep swift_image|wc -l)
 if [ $infstab -le 0 ]; then
-echo "/srv/swift_image /swift xfs loop=/dev/loop0,noatime,nodiratime,nobarrier,logbufs=8 0 0" |sudo tee -a /etc/fstab
+echo "/srv/swift_image /swift xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0" |sudo tee -a /etc/fstab
 fi 
 
 if [ ! -d /swift ]; then
