@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Modify these variables as needed
+# Modify these variables as needed 
+# From Env var
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
 SERVICE_PASSWORD=${SERVICE_PASSWORD:-$ADMIN_PASSWORD}
 DEMO_PASSWORD=${DEMO_PASSWORD:-$ADMIN_PASSWORD}
