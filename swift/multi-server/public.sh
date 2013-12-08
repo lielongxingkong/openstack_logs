@@ -1,9 +1,11 @@
 #!/bin/bash
 
+apt-get update 
 PROJECT=swift
 CODE=git://github.com/openstack/swift.git 
-apt-get install -y git git-core
-git clone $CODE /opt/$PROJECT
+#apt-get install -y git git-core
+#git clone $CODE /opt/$PROJECT
+cp -r /root/$PROJECT /opt/$PROJECT
 
 apt-get install -y curl gcc libffi-dev python-setuptools
 apt-get install -y python-dev python-pip
