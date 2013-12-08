@@ -1,15 +1,25 @@
 #!/bin/bash
 
+cp ./hosts /etc/hosts
 apt-get update 
 PROJECT=swift
+#ZIP=swift.zip
+#ZIPNAME=swift
 CODE=git://github.com/openstack/swift.git 
-#apt-get install -y git git-core
-#git clone $CODE /opt/$PROJECT
-cp -r /root/$PROJECT /opt/$PROJECT
+
+#unzip $ZIP 
+#cp -r  ./$PROJECT /opt/$PROJECT
 
 apt-get install -y curl gcc libffi-dev python-setuptools
 apt-get install -y python-dev python-pip
+
+apt-get install -y git git-core
+git clone $CODE /opt/$PROJECT
+cd /opt/$PROJECT
+git fetch && git checkout stable/havana
 pip install -r /opt/$PROJECT/requirements.txt
+python setup.py install
+cd -
 
 mkdir -p /var/cache/swift /srv/node/
 mkdir -p /etc/swift/
