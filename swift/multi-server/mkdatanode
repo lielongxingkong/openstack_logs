@@ -2,8 +2,7 @@
 
 source ./public.sh
 
-DISK=xvdb
-LOCAL_IP=datanode01
+export DISK=vdc
 
 apt-get install -y xfsprogs
 
