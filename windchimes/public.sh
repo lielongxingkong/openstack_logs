@@ -27,7 +27,7 @@ pip install -r /opt/$PROJECT/requirements.txt
 #python setup.py install
 cd -
 
-mkdir -p /var/cache/swift
+mkdir -p /var/cache/swift /var/cache/swift1 /var/cache/swift2 /var/cache/swift3 /var/cache/swift4
 find /var/cache/swift* -type f -name *.recon -exec rm -f {} \;
 mkdir -p /etc/swift/
 
