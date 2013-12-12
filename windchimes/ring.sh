@@ -16,10 +16,18 @@ zone=`echo $value|awk -F '|' '{print $1}'`
 ip=`echo $value|awk -F '|' '{print $2}'`
 swift_path=`echo $value|awk -F '|' '{print $3}'`
 weight=`echo $value|awk -F '|' '{print $4}'`
-swift-ring-builder storage.builder add $zone-$ip:6003/$swift_path $weight
+case $name in
+"metanode")
 swift-ring-builder account.builder add $zone-$ip:6002/$swift_path $weight
 swift-ring-builder container.builder add $zone-$ip:6001/$swift_path $weight
 swift-ring-builder object.builder add $zone-$ip:6000/$swift_path $weight
+;;
+"datanode")
+swift-ring-builder storage.builder add $zone-$ip:6003/$swift_path $weight
+;;
+*)
+;;
+esac
 done < $RING_CONF
 
 swift-ring-builder account.builder
