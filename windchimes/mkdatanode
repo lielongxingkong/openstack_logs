@@ -1,0 +1,39 @@
+#!/bin/bash
+
+source ./public.sh
+
+export DISK=vdc
+
+apt-get install -y xfsprogs
+
+umount /dev/$DISK
+mkfs.xfs -f -i size=512 /dev/$DISK
+mkdir -p /srv/node/$DISK
+mount -t xfs /dev/$DISK /srv/node/$DISK
+
+
+
+cat >/etc/swift/storage-server.conf <<EOF
+[DEFAULT]
+mount_check = false
+bind_ip = 0.0.0.0
+user = root
+workers = 2
+log_facility = LOG_LOCAL4
+recon_cache_path = /var/cache/swift
+
+[pipeline:main]
+pipeline = recon account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[filter:recon]
+use = egg:swift#recon
+
+[account-replicator]
+
+[account-auditor]
+
+[account-reaper]
+EOF

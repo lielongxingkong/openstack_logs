@@ -1,0 +1,25 @@
+127.0.0.1       localhost
+# 127.0.1.1     precise
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+192.168.0.2     client
+192.168.0.11    datanode01
+192.168.0.12    datanode02
+192.168.0.13    datanode03
+192.168.0.14    datanode04
+192.168.0.15    datanode05
+192.168.0.16    datanode06
+192.168.0.17    datanode07
+192.168.0.18    datanode08
+192.168.0.19    datanode09
+192.168.0.20    datanode10
+192.168.0.21    cache
+192.168.0.31    proxy
+192.168.0.41    monitor
+192.168.0.51    meta
