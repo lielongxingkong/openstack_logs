@@ -7,7 +7,7 @@ echo $LOCAL_NAME > /etc/hostname
 hostname $LOCAL_NAME
 
 apt-get update 
-PROJECT=swift
+PROJECT=windchimes
 #ZIP=swift.zip
 #ZIPNAME=swift
 CODE=http://121.199.49.51/lielongxingkong/windchimes.git 
