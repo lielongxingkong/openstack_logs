@@ -1,0 +1,9 @@
+#!/bin/bash
+sed -i s/[[:space:]]//g ./Ring.conf
+cp ./Ring.conf /etc/swift/
+
+RING_CONF="./Ring.conf"
+source ./data_ring
+source ./meta_ring
+
+rm /etc/swift/Ring.conf
