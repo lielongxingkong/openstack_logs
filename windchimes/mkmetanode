@@ -14,6 +14,8 @@ for DISK in ${DISKS[@]};do
 done
 
 apt-get install -y rsync
+
+rm -f /etc/rsyncd.conf
 cat >/etc/rsyncd.conf <<EOF
 uid = root
 gid = root 
@@ -21,37 +23,52 @@ log file = /var/log/rsyncd.log
 pid file = /var/run/rsyncd.pid
 address = $LOCAL_IP
 
-[account]
-max connections = 2
-path = /srv/node/
-read only = false
-lock file = /var/lock/account.lock
-
-[container]
-max connections = 2
-path = /srv/node/
-read only = false
-lock file = /var/lock/container.lock
-
-[object]
-max connections = 2
-path = /srv/node/
-read only = false
-lock file = /var/lock/object.lock
 EOF
+
+for i in {1..4};do
+cat >>/etc/rsyncd.conf <<EOF
+[account60${i}2]
+max connections = 25
+path = /srv/node/
+read only = false
+lock file = /var/lock/account60${i}2.lock
+
+[container60${i}1]
+max connections = 25
+path = /srv/node/
+read only = false
+lock file = /var/lock/container60${i}1.lock
+
+[object60${i}0]
+max connections = 25
+path = /srv/node/
+read only = false
+lock file = /var/lock/object60${i}0.lock
+
+EOF
+done
 
 perl -pi -e 's/RSYNC_ENABLE=false/RSYNC_ENABLE=true/' /etc/default/rsync
 
 service rsync restart
 
-cat >/etc/swift/account-server.conf <<EOF
+rm -fr /etc/swift/account-server
+rm -fr /etc/swift/container-server
+rm -fr /etc/swift/object-server
+mkdir -p /etc/swift/account-server
+mkdir -p /etc/swift/container-server
+mkdir -p /etc/swift/object-server
+
+for i in {1..4};do
+cat >/etc/swift/account-server/${i}.conf <<EOF
 [DEFAULT]
 mount_check = false
 bind_ip = 0.0.0.0
 user = root
 workers = 2
+bind_port = 60${i}2
 log_facility = LOG_LOCAL3
-recon_cache_path = /var/cache/swift
+recon_cache_path = /var/cache/swift${i}
 
 [pipeline:main]
 pipeline = recon account-server
@@ -69,15 +86,15 @@ use = egg:swift#recon
 [account-reaper]
 EOF
 
-cat >/etc/swift/container-server.conf <<EOF
+cat >/etc/swift/container-server/${i}.conf <<EOF
 [DEFAULT]
 mount_check = false
 bind_ip = 0.0.0.0
 user = root
 workers = 2
+bind_port = 60${i}1
 log_facility = LOG_LOCAL2
-recon_cache_path = /var/cache/swift
-eventlet_debug = true
+recon_cache_path = /var/cache/swift${i}
 
 [pipeline:main]
 pipeline = recon container-server
@@ -97,15 +114,16 @@ use = egg:swift#recon
 [container-sync]
 EOF
 
-cat >/etc/swift/object-server.conf <<EOF
+cat >/etc/swift/object-server/${i}.conf <<EOF
 [DEFAULT]
 mount_check = false
 bind_ip = 0.0.0.0
 user = root
 workers = 2
+bind_port = 60${i}0
 log_facility = LOG_LOCAL1
 disable_fallocate = true
-recon_cache_path = /var/cache/swift
+recon_cache_path = /var/cache/swift${i}
 
 [pipeline:main]
 pipeline = recon object-server
@@ -124,3 +142,4 @@ use = egg:swift#object
 
 [object-expirer]
 EOF
+done
