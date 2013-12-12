@@ -23,10 +23,10 @@ log_facility = LOG_LOCAL4
 recon_cache_path = /var/cache/swift
 
 [pipeline:main]
-pipeline = recon account-server
+pipeline = recon storage-server
 
-[app:account-server]
-use = egg:swift#account
+[app:storage-server]
+use = egg:swift#storage
 
 [filter:recon]
 use = egg:swift#recon
