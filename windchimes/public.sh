@@ -23,8 +23,9 @@ apt-get install -y git git-core
 git clone $CODE /opt/$PROJECT
 cd /opt/$PROJECT
 git fetch && git checkout $BRANCH
+git pull
 pip install -r /opt/$PROJECT/requirements.txt
-#python setup.py install
+python setup.py install
 cd -
 
 mkdir -p /var/cache/swift /var/cache/swift1 /var/cache/swift2 /var/cache/swift3 /var/cache/swift4
