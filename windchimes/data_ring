@@ -12,14 +12,13 @@ case $name in
 	ip=`echo $value|awk -F '|' '{print $2}'`
 	swift_path=`echo $value|awk -F '|' '{print $3}'`
 	weight=`echo $value|awk -F '|' '{print $4}'`
-	swift-ring-builder storage.builder add $zone-$ip:6003/$swift_path $weight
+	swift-ring-builder storage.builder add r1$zone-$ip:6003/$swift_path $weight
 ;;
 *)
 ;;
 esac
 done < $RING_CONF
 
-swift-ring-builder storage.builder 
 swift-ring-builder storage.builder rebalance
 
 while read line; do
