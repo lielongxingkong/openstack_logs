@@ -63,7 +63,6 @@ for i in {1..4};do
 cat >/etc/swift/account-server/${i}.conf <<EOF
 [DEFAULT]
 mount_check = false
-bind_ip = 0.0.0.0
 user = root
 workers = 2
 bind_port = 60${i}2
@@ -80,6 +79,7 @@ use = egg:swift#account
 use = egg:swift#recon
 
 [account-replicator]
+vm_test_mode = yes
 
 [account-auditor]
 
@@ -106,7 +106,7 @@ use = egg:swift#container
 use = egg:swift#recon
 
 [container-replicator]
-
+vm_test_mode = yes
 [container-updater]
 
 [container-auditor]
@@ -135,6 +135,7 @@ use = egg:swift#recon
 use = egg:swift#object
 
 [object-replicator]
+vm_test_mode = yes
 
 [object-updater]
 
