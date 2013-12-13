@@ -18,15 +18,53 @@ env.roledefs = {
 env.password = "root"
 
 @roles('data')
+def resetdata():
+    with cd('/root/windchimes'):
+    	run('bash ./mkdatanode')
+@roles('meta')
+def resetmeta():
+    with cd('/root/windchimes'):
+    	run('bash ./mkmetanode')
+@roles('proxy')
+def resetproxy():
+    with cd('/root/windchimes'):
+    	run('bash ./mkproxy')
+
+@roles('data','meta','proxy')
 def update():
     with cd('/opt/windchimes'):
+        run('git checkout develop')
         run('git pull')
+        run('python setup.py install')
+
+@roles('data')
+def data_restart():
     run('swift-init storage restart')
 
 @roles('meta')
-def task2():
-    run('ls ~/temp/ | wc -l')
+def meta_restart():
+    run('swift-init all restart')
+
+@roles('proxy')
+def proxy_restart():
+    run('swift-init proxy restart')
+
+@roles('data', 'meta', 'proxy')
+def cleanlog():
+    run('service rsyslog stop')
+    run('rm /var/log/swift/*')
+    run('service rsyslog start')
 
 def dotask():
-    execute(task1)
-    execute(task2)
+    execute(cleanlog)
+    execute(update)
+
+def reset():
+    execute(resetdata)
+    execute(resetmeta)
+    execute(resetproxy)
+
+def restart():
+    execute(data_restart)
+    execute(meta_restart)
+    execute(proxy_restart)
