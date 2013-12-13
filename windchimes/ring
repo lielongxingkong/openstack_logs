@@ -2,8 +2,12 @@
 sed -i s/[[:space:]]//g ./Ring.conf
 cp ./Ring.conf /etc/swift/
 
+cd /etc/swift
+rm -f *.builder *.ring.gz backups/*.builder backups/*.ring.gz
+cd -
+
 RING_CONF="./Ring.conf"
-source ./data_ring
 source ./meta_ring
+source ./data_ring
 
 rm /etc/swift/Ring.conf
